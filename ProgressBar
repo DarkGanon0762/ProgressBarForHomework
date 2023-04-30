@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Barra di avanzamento</title>
+	<style>
+		body {
+			background-color: #000;
+			color: #fff;
+		}
+
+		#progress-bar {
+			background-color: #f2f2f2;
+			height: 20px;
+			border-radius: 10px;
+			margin-bottom: 10px;
+			position: relative;
+		}
+
+		#progress {
+			background-color: #7a00ff;
+			height: 100%;
+			border-radius: 10px;
+			transition: width 0.5s;
+			position: relative;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-weight: bold;
+			font-size: 16px;
+		}
+
+		.button {
+			background-color: #008CBA;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border-radius: 10px;
+		}
+
+		#progress.reset {
+			animation-name: reset-animation;
+			animation-duration: 0.5s;
+			animation-timing-function: ease-in-out;
+			animation-fill-mode: forwards;
+		}
+
+		@keyframes reset-animation {
+			from {
+				width: 100%;
+			}
+			to {
+				width: 0%;
+			}
+		}
+
+		#congratulations {
+			display: none;
+			text-align: center;
+			font-size: 24px;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div id="progress-bar">
+		<div id="progress"></div>
+	</div>
+	<input type="text" id="percent-input" placeholder="Inserisci la percentuale di avanzamento">
+	<button class="button" onclick="incrementProgress()">Avanza</button>
+	<button class="button" onclick="resetProgress()">Resetta</button>
+	<div id="congratulations">Congratulazioni per aver finito tutti i compiti!</div>
+
+	<script>
+		var progressBar = document.getElementById("progress");
+		var currentProgress = 0;
+		var congratulationsMsg = document.getElementById("congratulations");
+
+		function incrementProgress() {
+			var percent = parseInt(document.getElementById("percent-input").value);
+			if (!isNaN(percent) && percent > 0 && percent <= 100) {
+				if (currentProgress + percent > 100) {
+					currentProgress = 100;
+				} else {
+					currentProgress += percent;
+				}
+				progressBar.style.width = currentProgress + "%";
+				progressBar.innerText = currentProgress + "%";
+			}
+			if (currentProgress === 100) {
+				congratulationsMsg.style.display = "block";
+			}
+		}
+
+		function resetProgress() {
+			progressBar.classList.add("reset");
+			currentProgress = 0;
+			document.getElementById("percent-input").value = "";
+			progressBar.innerText = "";
+			setTimeout(function() {
+				progressBar.classList.remove("reset");
+				progressBar.style.width = "0%";
+				congratulationsMsg.style.display = "none";
+			}, 500);
+		}
+	</script>
+</body>
+</html
